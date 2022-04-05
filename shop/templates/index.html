@@ -5,10 +5,33 @@
     <meta charset="UTF-8">
     <title>Book Store</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
 
 </head>
 <body>
+
+<!--Navbar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Book Store</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a  id="cart" class="nav-link" href="#">Cart(0)</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!--Navbar ends here-->
 
 <!--Search Bar-->
             <div class="col-md-12">
@@ -28,6 +51,11 @@
 <!--Products listing-->
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
     <div class="row mt-2">
         {% for products in products_objects %}
         <div class="col-md-4">
@@ -39,7 +67,7 @@
                       <p class="card-text">Discount Price: {{ products.product_discount_price }} ₹</p>
 
                     <a href="/{{ products.id }}" class="btn btn-primary">View Item</a>
-                    <a href="#" class="btn btn-warning">Add to Cart</a>
+                    <button id="{{ products.id }}" class="btn atc btn-warning">Add to Cart</button>
                   </div>
             </div>
         </div>
@@ -72,4 +100,26 @@
 <!--Products listing-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+    if(localStorage.getItem('cart') == null){
+        var cart = {};
+    }else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    $(document).on('click', '.atc', function(){
+        var item_id = this.id.toString();
+
+        if(cart[item_id] != undefined){
+            cart[item_id] += 1;
+        }else{
+            cart[item_id] = 1;
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById("cart").innerHTML = "Cart(" + Object.keys(cart).length + ")";
+    });
+</script>
+
 </html>
