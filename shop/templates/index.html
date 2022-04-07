@@ -68,7 +68,7 @@
                   <div class="card-body p-2">
                       <img src="{{ products.product_image }}" class="card-img-top" alt="">
                       <h5 id="nm{{ products.id }}" class="card-title">{{ products.product_name }}</h5>
-                      <div id="price{{ products.id }}" class="card-text">Price: {{ products.product_price }} ₹</div>
+                      <div id="price{{ products.id }}" class="card-text">{{ products.product_price }}</div>
                       <p class="card-text">Discount Price: {{ products.product_discount_price }} ₹</p>
 
                     <a href="/{{ products.id }}" class="btn btn-primary">View Item</a>
@@ -141,12 +141,13 @@
         var cartString ="";
         cartString += "<h5>This is your cart</h5>";
         var cartIndex = 1;
-        for(var x in cart){
-            if(document.getElementById("nm"+x) != null){
-            cartString += cartIndex;
-            cartString += document.getElementById("nm"+x).innerHTML + " Qty:" + cart[x][0] + "</br>";
-            cartIndex+=1;
-            }
+
+        let cartObject = JSON.parse(localStorage.getItem('cart'))
+
+        for(item in cartObject){
+            console.log(cartObject[item][0])
+            console.log(cartObject[item][1])
+            cartString += cartObject[item][1] + "Qty: " + cartObject[item][0]+"</br>"
         }
 
         cartString += "<a href='/checkout'><button class='btn btn-success' id='checkout'>Checkout</button></a>";
